@@ -20,18 +20,28 @@ call newfilm('Ichi the Killer', 'As sadomasochistic yakuza enforcer Kakihara sea
 ------------------------------------------------------------------------------------
 --Question 2
 
-create or replace function filmsincategory(category_id)
+create or replace function get_category_count(category_id integer)
+returns integer
 language plpgsql
 as $$
+	declare category_count integer;
 begin
-	
-	
-end
-$$
+	select count(category_id) into category_count
+	from film_category
+	group by category_id;
+	return category_count;
+end;
+$$;
 
+select get_category_count(7);
 
 
 ------------------------------------------------------------------------------------
 
 select length
 from film;
+
+select count(category_id), category_id
+from film_category
+group by category_id
+order by count desc;
